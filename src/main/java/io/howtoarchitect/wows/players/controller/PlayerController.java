@@ -46,11 +46,11 @@ public class PlayerController {
             // we need to do this for all regions until we find the user...
             Account account = new Account();
 
-            String region = Region.asia;
+            String region = Region.ASIA;
             account = searchPlayer.searchPlayer(region, nickname);
             log.info(account.toString());
             if (account == null || account.getData() == null) {
-                region = Region.ru;
+                region = Region.RU;
                 account = searchPlayer.searchPlayer(region, nickname);
             }
 
@@ -64,6 +64,3 @@ public class PlayerController {
     }
 
 }
-
-/*
- 
