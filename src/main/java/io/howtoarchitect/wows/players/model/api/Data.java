@@ -1,22 +1,28 @@
 package io.howtoarchitect.wows.players.model.api;
 
-import java.util.List;
-
 public class Data {
+    private String nickname;
+    private Long account_id;
 
-    private List<Response> response;
-
-    public List<Response> getResponse() {
-        return response;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setResponse(List<Response> response) {
-        this.response = response;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public Long getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(Long account_id) {
+        this.account_id = account_id;
     }
 
     @Override
     public String toString() {
-        return "Data [response=" + response + "]";
+        return "Data [account_id=" + account_id + ", nickname=" + nickname + "]";
     }
 
 }

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.howtoarchitect.wows.players.controller.api.SearchPlayer;
 import io.howtoarchitect.wows.players.model.Player;
+import io.howtoarchitect.wows.players.model.api.Account;
 import io.howtoarchitect.wows.players.repository.PlayerRepository;
 import io.howtoarchitect.wows.players.specification.PlayerSpecification;
 
@@ -25,6 +27,9 @@ public class PlayerController {
 
     @Autowired
     EntityManager em;
+
+    @Autowired
+    private SearchPlayer searchPlayer;
 
     private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
 
@@ -38,7 +43,9 @@ public class PlayerController {
         if (players.size() == 0) {
             // this is where we need to make calls to APIs to get data
             // this may be an event we send to make sure we are not coupling services
-            return new Player();
+            Account account = searchPlayer.searchPlayer(region, nickname);
+            Player newP = new Player(account, region);
+            return newP;
         }
         return players.get(0);
     }

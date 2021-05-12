@@ -3,7 +3,7 @@ package io.howtoarchitect.wows.players.model.api;
 public class Account {
     private String status;
     private Meta meta;
-    private Data data;
+    private Data[] data;
 
     public String getStatus() {
         return status;
@@ -21,11 +21,11 @@ public class Account {
         this.meta = meta;
     }
 
-    public Data getData() {
+    public Data[] getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(Data[] data) {
         this.data = data;
     }
 
@@ -35,7 +35,13 @@ public class Account {
             return "Account [meta=" + meta + ", status=" + status + " .. but data is not read yet!! (ugghhh)";
 
         } else {
-            return "Account [meta=" + meta + ", status=" + status + ", Data=" + data.toString() + " ]";
+            StringBuilder sb = new StringBuilder("");
+            int i = 0;
+            for (Data d : data) {
+                sb.append(" idx[" + i + "] ==> " + d.toString());
+                i++;
+            }
+            return "Account [meta=" + meta + ", status=" + status + ", Data=" + sb.toString() + " ]";
         }
     }
 
