@@ -23,6 +23,10 @@ public class Player {
     private Date logoutAt;
     private Date statsUpdatedAt;
 
+    public String toString() {
+        return this.getId() + " " + this.getNickname();
+    }
+
     @Id
     @Column(name = "application_id", nullable = false)
     public long getId() {

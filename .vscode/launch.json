@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PlayersApplication<players>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "io.howtoarchitect.wows.players.PlayersApplication",
+            "projectName": "players",
+            "args": ""
+        }
+    ]
+}
