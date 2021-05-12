@@ -13,13 +13,13 @@ import org.springframework.web.client.RestTemplate;
 import io.howtoarchitect.wows.players.model.api.Account;
 
 @Service
-public class SearchPlayer {
+public class SearchAccount {
 
-    private static final Logger log = LoggerFactory.getLogger(SearchPlayer.class);
+    private static final Logger log = LoggerFactory.getLogger(SearchAccount.class);
 
-    private final static String host_asia = "https://api.worldofwarships.asia/wows/";
-
-    private static final String endpoint_searchPlayer = "account/list/";
+    private final static String hostPrefix = "https://api.worldofwarships.";
+    private static final String hostSuffix = "/wows/account";
+    private static final String hostAccountAPI = "/list/";
 
     private static final String key = "05a1aa6ea78cf970ecf89db80b86d23c";
 
@@ -28,7 +28,8 @@ public class SearchPlayer {
 
     public Account searchPlayer(String region, String nickname) {
 
-        String BASE_URL = host_asia + endpoint_searchPlayer + "?application_id=" + key + "&search=" + nickname;
+        String BASE_URL = hostPrefix + region + hostSuffix + hostAccountAPI + "?application_id=" + key + "&search="
+                + nickname;
         log.info(BASE_URL);
 
         ResponseEntity<Account> responseEntity = restTemplate.getForEntity(BASE_URL, Account.class);

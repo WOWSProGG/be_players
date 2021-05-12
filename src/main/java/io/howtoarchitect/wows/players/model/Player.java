@@ -60,7 +60,7 @@ public class Player {
         this.nickname = nickname;
     }
 
-    @Column(length = 3)
+    @Column(length = 4)
     public String getRegion() {
         return region;
     }
