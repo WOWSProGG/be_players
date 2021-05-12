@@ -92,38 +92,4 @@ public class PlayerController {
  * 
  * 
  * 
- * 
- * package io.howtoarchitect.wows.players.repository;
- * 
- * import java.util.ArrayList; import java.util.List;
- * 
- * import javax.persistence.EntityManager; import
- * javax.persistence.criteria.CriteriaBuilder; import
- * javax.persistence.criteria.CriteriaQuery; import
- * javax.persistence.criteria.Predicate; import javax.persistence.criteria.Root;
- * 
- * import org.springframework.beans.factory.annotation.Autowired;
- * 
- * import io.howtoarchitect.wows.players.model.Player;
- * 
- * public class PlayerRepositoryImpl implements PlayerRepositoryCustom {
- * 
- * @Autowired EntityManager em;
- * 
- * @Override public Player findPlayerByRegionAndName(String region, String
- * nickname) { CriteriaBuilder cb = em.getCriteriaBuilder();
- * CriteriaQuery<Player> cq = cb.createQuery((Player.class));
- * 
- * Root<Player> root = cq.from(Player.class); List<Predicate> predicates = new
- * ArrayList<>();
- * 
- * predicates.add(cb.equal(root.get("nickname"), nickname));
- * predicates.add(cb.equal(root.get("region"), region));
- * cq.where(predicates.toArray(new Predicate[0]));
- * 
- * Player player = new Player(); try { player =
- * em.createQuery(cq).getSingleResult(); } catch (Exception ex) { // do nothing,
- * as a blank player will be returned. }
- * 
- * return player; } }
  */
