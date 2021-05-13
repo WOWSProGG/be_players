@@ -20,7 +20,7 @@ import io.howtoarchitect.wows.players.model.api.Account;
 import io.howtoarchitect.wows.players.processor.SearchAPIProcessor;
 import io.howtoarchitect.wows.players.processor.SearchPlayerImpl;
 import io.howtoarchitect.wows.players.repository.PlayerRepository;
-import io.howtoarchitect.wows.players.specification.PlayerSpecification;
+import io.howtoarchitect.wows.players.repository.specification.PlayerSpecification;
 
 @RestController
 public class PlayerController {

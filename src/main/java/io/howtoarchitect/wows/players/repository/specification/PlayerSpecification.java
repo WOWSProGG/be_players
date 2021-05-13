@@ -1,4 +1,4 @@
-package io.howtoarchitect.wows.players.specification;
+package io.howtoarchitect.wows.players.repository.specification;
 
 import org.springframework.data.jpa.domain.Specification;
 
