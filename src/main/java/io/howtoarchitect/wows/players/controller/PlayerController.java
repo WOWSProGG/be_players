@@ -52,7 +52,7 @@ public class PlayerController {
             account = searchPlayer.searchPlayer(region, nickname);
             log.info(account.toString());
             if (account == null || account.getData() == null) {
-                region = Region.RU;
+                region = Region.RUSSIA;
                 account = searchPlayer.searchPlayer(region, nickname);
             }
 
@@ -61,9 +61,11 @@ public class PlayerController {
             playerRepo.save(player);
 
             // COR Pattern implementation
-            SearchAPIProcessor sap_asia = new SearchPlayerImpl(null);
-            SearchAPIProcessor sap_ru = new SearchPlayerImpl(sap_asia);
-            sap_ru.runSearch(0);
+            SearchAPIProcessor sap_asia = new SearchPlayerImpl(null, Region.ASIA);
+            SearchAPIProcessor sap_ru = new SearchPlayerImpl(sap_asia, Region.RUSSIA);
+            SearchAPIProcessor sap_eu = new SearchPlayerImpl(sap_ru, Region.EUROPE);
+            SearchAPIProcessor sap_na = new SearchPlayerImpl(sap_eu, Region.NORTH_AMERICA);
+            sap_na.runSearch();
         } else {
             player = players.get(0);
         }

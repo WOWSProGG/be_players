@@ -4,6 +4,6 @@ public abstract class SearchAPIProcessor {
 
     public SearchAPIProcessor nextProcessor;
 
-    public abstract String runSearch(Integer index);
+    public abstract String runSearch();
 
 }
