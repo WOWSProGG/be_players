@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.howtoarchitect.wows.players.constants.Region;
+import io.howtoarchitect.wows.players.constant.Region;
 import io.howtoarchitect.wows.players.controller.api.SearchAccount;
 import io.howtoarchitect.wows.players.model.Player;
 import io.howtoarchitect.wows.players.model.api.Account;
+import io.howtoarchitect.wows.players.processor.SearchAPIProcessor;
+import io.howtoarchitect.wows.players.processor.SearchPlayerImpl;
 import io.howtoarchitect.wows.players.repository.PlayerRepository;
 import io.howtoarchitect.wows.players.specification.PlayerSpecification;
 
@@ -57,6 +59,11 @@ public class PlayerController {
             player = new Player(account, region);
             log.info(player.toString());
             playerRepo.save(player);
+
+            // COR Pattern implementation
+            SearchAPIProcessor sap_asia = new SearchPlayerImpl(null);
+            SearchAPIProcessor sap_ru = new SearchPlayerImpl(sap_asia);
+            sap_ru.runSearch(0);
         } else {
             player = players.get(0);
         }

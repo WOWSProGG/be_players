@@ -1,4 +1,4 @@
-package io.howtoarchitect.wows.players.constants;
+package io.howtoarchitect.wows.players.constant;
 
 public final class Region {
     public static final String ASIA = "asia";
