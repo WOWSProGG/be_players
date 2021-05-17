@@ -11,24 +11,24 @@ import org.springframework.boot.web.server.LocalServerPort;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class PlayersApplicationTests {
-	@LocalServerPort
-	private int port;
+public class PlayerControllerTests {
+    @LocalServerPort
+    private int port;
 
-	@Autowired
-	private PlayerController controller;
+    @Autowired
+    private PlayerController controller;
 
-	@Autowired
-	private TestRestTemplate restTemplate;
+    @Autowired
+    private TestRestTemplate restTemplate;
 
-	@Test
-	void contextLoads() {
-		assertThat(controller).isNotNull();
-	}
+    @Test
+    void contextLoads() {
+        assertThat(controller).isNotNull();
+    }
 
-	@Test
-	void makePlayerAPICAll() {
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuckSr", String.class)).isNotNull();
-	}
+    @Test
+    void makePlayerAPICAll() {
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuckSr", String.class)).isNotNull();
+    }
 
 }
