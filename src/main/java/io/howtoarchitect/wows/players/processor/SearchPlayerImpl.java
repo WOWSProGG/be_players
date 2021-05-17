@@ -9,7 +9,7 @@ public class SearchPlayerImpl extends SearchAPIProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
 
-    private String region;
+    private final String region;
 
     public SearchPlayerImpl(SearchAPIProcessor nextProcessor, String region) {
         super.nextProcessor = nextProcessor;
