@@ -35,8 +35,8 @@ public class Account {
             return "Account [meta=" + meta + ", status=" + status + " .. but data is not read yet!! (ugghhh)";
 
         } else {
-            StringBuilder sb = new StringBuilder();
-            int i = 0;
+            var sb = new StringBuilder();
+            var i = 0;
             for (Data d : data) {
                 sb.append(" idx[" + i + "] ==> " + d.toString());
                 i++;
