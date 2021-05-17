@@ -1,44 +1,41 @@
 package io.howtoarchitect.wows.players.controller;
 
-import static org.springframework.data.jpa.domain.Specification.where;
-
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
 import io.howtoarchitect.wows.players.constant.Region;
 import io.howtoarchitect.wows.players.controller.api.SearchAccount;
 import io.howtoarchitect.wows.players.model.Player;
 import io.howtoarchitect.wows.players.model.api.Account;
-import io.howtoarchitect.wows.players.processor.SearchAPIProcessor;
-import io.howtoarchitect.wows.players.processor.SearchPlayerImpl;
+import io.howtoarchitect.wows.players.processor.findPlayer.BaseSearchProcessor;
+import io.howtoarchitect.wows.players.processor.findPlayer.SearchProcessorImpl;
 import io.howtoarchitect.wows.players.repository.PlayerRepository;
 import io.howtoarchitect.wows.players.repository.specification.PlayerSpecification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+import static org.springframework.data.jpa.domain.Specification.where;
+
 
 @RestController
 public class PlayerController {
 
-    @Autowired
-    private PlayerRepository playerRepo;
+    private final PlayerRepository playerRepo;
 
-    @Autowired
-    EntityManager em;
-
-    @Autowired
-    private SearchAccount searchPlayer;
+    private final SearchAccount searchPlayer;
 
     private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
 
+    public PlayerController(PlayerRepository playerRepo, SearchAccount searchPlayer) {
+        this.playerRepo = playerRepo;
+        this.searchPlayer = searchPlayer;
+    }
+
     @GetMapping("/players/{nickname}")
     public Player get(@PathVariable String nickname) {
-        Player player = new Player();
+        Player player;
         List<Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
 
         if (players.size() == 0) {
@@ -46,7 +43,7 @@ public class PlayerController {
             // this may be an event we send to make sure we are not coupling services
 
             // we need to do this for all regions until we find the user...
-            Account account = new Account();
+            Account account;
 
             String region = Region.ASIA;
             account = searchPlayer.searchPlayer(region, nickname);
@@ -61,11 +58,12 @@ public class PlayerController {
             playerRepo.save(player);
 
             // COR Pattern implementation
-            SearchAPIProcessor sap_asia = new SearchPlayerImpl(null, Region.ASIA);
-            SearchAPIProcessor sap_ru = new SearchPlayerImpl(sap_asia, Region.RUSSIA);
-            SearchAPIProcessor sap_eu = new SearchPlayerImpl(sap_ru, Region.EUROPE);
-            SearchAPIProcessor sap_na = new SearchPlayerImpl(sap_eu, Region.NORTH_AMERICA);
-            sap_na.runSearch();
+            BaseSearchProcessor searchProcessorAsia = new SearchProcessorImpl(Region.ASIA, null);
+            BaseSearchProcessor searchProcessorRU = new SearchProcessorImpl(Region.RUSSIA, searchProcessorAsia);
+            BaseSearchProcessor searchProcessorEU = new SearchProcessorImpl(Region.EUROPE, searchProcessorRU);
+            BaseSearchProcessor searchProcessorNA = new SearchProcessorImpl(Region.NORTH_AMERICA,searchProcessorEU);
+            searchProcessorNA.runSearch();
+
         } else {
             player = players.get(0);
         }
