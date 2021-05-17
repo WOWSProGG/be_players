@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 
 
 @RestController
+@RequestMapping("/api/players")
 public class PlayerController {
 
     private final PlayerRepository playerRepo;
@@ -33,7 +35,7 @@ public class PlayerController {
         this.searchPlayer = searchPlayer;
     }
 
-    @GetMapping("/players/{nickname}")
+    @GetMapping("/{nickname}")
     public Player get(@PathVariable String nickname) {
         Player player;
         List<Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
