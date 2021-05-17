@@ -27,7 +27,7 @@ public class PlayerControllerTests {
     }
 
     @Test
-    void makePlayerAPICAll() {
+    void getPlayerByNickname() {
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuckSr", String.class)).isNotNull();
     }
 
