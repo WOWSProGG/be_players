@@ -2,10 +2,10 @@ name: Build
 on:
   push:
     branches:
-      - [main, deveop]
+      - [main, develop]
   pull_request:
     branches:
-      - [main, deveop]
+      - [main, develop]
     types: [opened, synchronize, reopened]
 jobs:
   build:
