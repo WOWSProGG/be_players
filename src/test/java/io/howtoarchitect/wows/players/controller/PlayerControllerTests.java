@@ -1,6 +1,6 @@
-package io.howtoarchitect.wows.players;
+package io.howtoarchitect.wows.players.controller;
 
-import io.howtoarchitect.wows.players.controller.PlayerController;
+import io.howtoarchitect.wows.players.model.data.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +11,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class PlayerControllerTests {
+class PlayerControllerTests {
     @LocalServerPort
     private int port;
 
@@ -28,11 +28,14 @@ public class PlayerControllerTests {
 
     @Test
     void getPlayerByNickname() {
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuckSr", String.class)).isNotNull();
+        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuckSr", Response.class);
+        assertThat(response.getCode()).isEqualTo(200);
+        assertThat(response.getPlayer()).isNotNull();
     }
 
-//    @Test
-//    void getInvalidPlayer() {
-//        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/players/InvalidPlayer", String.class)).isNull();
-//    }
+    @Test
+    void getInvalidPlayer() {
+        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/InvalidPlayer", Response.class);
+        assertThat(response.getCode()).isEqualTo(404);
+    }
 }
