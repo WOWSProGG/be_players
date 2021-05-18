@@ -31,4 +31,8 @@ public class PlayerControllerTests {
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuckSr", String.class)).isNotNull();
     }
 
+//    @Test
+//    void getInvalidPlayer() {
+//        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/players/InvalidPlayer", String.class)).isNull();
+//    }
 }
