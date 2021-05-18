@@ -37,7 +37,7 @@ public class PlayerController {
 
     @GetMapping("/{nickname}")
     public Player get(@PathVariable String nickname) {
-        Player player;
+        Player player = new Player();
         List<Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
 
         if (players.size() == 0) {
@@ -55,16 +55,20 @@ public class PlayerController {
                 account = searchPlayer.searchPlayer(region, nickname);
             }
 
-            player = new Player(account, region);
-            log.info(player.toString());
-            playerRepo.save(player);
+            log.info(account.toString());
+            if (account.getData().length > 0) {
+                player = new Player(account, region);
+                log.info(player.toString());
+                playerRepo.save(player);
+            }
 
             // COR Pattern implementation
-            BaseSearchProcessor searchProcessorAsia = new SearchProcessorImpl(Region.ASIA, null);
-            BaseSearchProcessor searchProcessorRU = new SearchProcessorImpl(Region.RUSSIA, searchProcessorAsia);
-            BaseSearchProcessor searchProcessorEU = new SearchProcessorImpl(Region.EUROPE, searchProcessorRU);
-            BaseSearchProcessor searchProcessorNA = new SearchProcessorImpl(Region.NORTH_AMERICA,searchProcessorEU);
-            searchProcessorNA.runSearch();
+            BaseSearchProcessor searchProcessorRU = new SearchProcessorImpl(Region.RUSSIA, null);
+            BaseSearchProcessor searchProcessorNA = new SearchProcessorImpl(Region.NORTH_AMERICA, searchProcessorRU);
+            BaseSearchProcessor searchProcessorEU = new SearchProcessorImpl(Region.EUROPE, searchProcessorNA);
+            BaseSearchProcessor searchProcessorAsia = new SearchProcessorImpl(Region.ASIA, searchProcessorEU);
+
+            searchProcessorAsia.runSearch();
 
         } else {
             player = players.get(0);

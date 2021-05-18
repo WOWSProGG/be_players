@@ -1,6 +1,5 @@
 package io.howtoarchitect.wows.players.processor.findplayer;
 
-import io.howtoarchitect.wows.players.controller.PlayerController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +15,8 @@ public class SearchProcessorImpl extends BaseSearchProcessor {
     public String runSearch() {
         log.info("search processor " + region + " is executed");
 
-        if (nextProcessor != null) {
-            nextProcessor.runSearch();
+        if (super.nextProcessor != null) {
+            super.nextProcessor.runSearch();
         }
 
         return null;
