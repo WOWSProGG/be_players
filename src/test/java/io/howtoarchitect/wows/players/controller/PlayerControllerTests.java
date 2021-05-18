@@ -1,5 +1,6 @@
 package io.howtoarchitect.wows.players.controller;
 
+import io.howtoarchitect.wows.players.constant.Region;
 import io.howtoarchitect.wows.players.model.data.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,10 @@ class PlayerControllerTests {
         var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuckSr", Response.class);
         assertThat(response.getCode()).isEqualTo(200);
         assertThat(response.getPlayer()).isNotNull();
+
+        assertThat(response.getPlayer().getNickname()).isEqualTo("NukeDuckSr");
+        assertThat(response.getPlayer().getRegion()).isEqualTo(Region.ASIA);
+        assertThat(response.getPlayer().getId()).isEqualTo(2025532507);
     }
 
     @Test
