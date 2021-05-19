@@ -28,6 +28,9 @@ public class Player {
     private Date logoutAt;
     private Date statsUpdatedAt;
 
+    public Player() {
+    }
+
     public Player(Data playerData, String region) {
         this.id = playerData.getAccount_id();
         this.nickname = playerData.getNickname();
