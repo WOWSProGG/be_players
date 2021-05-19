@@ -7,10 +7,12 @@ public class PlayerResponse {
     private String message;
     private Player player;
 
-    public static PlayerResponse getErrorResponse() {
-        var emptyResponse = new PlayerResponse();
-        emptyResponse.setCode(404);
-        return emptyResponse;
+    public static PlayerResponse getErrorResponse(Integer code, String message) {
+        var errorResponse = new PlayerResponse();
+        errorResponse.setCode(code);
+        errorResponse.setMessage(message);
+
+    return errorResponse;
     }
 
     public static PlayerResponse getPlayer(Player player) {

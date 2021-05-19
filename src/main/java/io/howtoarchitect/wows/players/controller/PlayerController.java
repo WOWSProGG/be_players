@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
@@ -49,11 +51,15 @@ public class PlayerController {
     public PlayerResponse get(@PathVariable String nickname) {
         log.info(MessageFormat.format("Calling /player/get for {0}", nickname));
 
-        List<Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
+        if(!isValidPlayerName(nickname)) {
+            return PlayerResponse.getErrorResponse(412, "invalid characters in nickname.");
+        }
 
+
+        List<Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
         if (players.isEmpty()) {
             // return an empty response.
-            return PlayerResponse.getErrorResponse();
+            return PlayerResponse.getErrorResponse(404, "PLayer not found.");
         }
 
         // we did find the player in the database, lets return that....!
@@ -77,5 +83,13 @@ public class PlayerController {
 
         List<Player> players = searchProcessorAsia.findPlayer(nickname, new ArrayList<>());
         return PlayerListResponse.getPlayerList(players);
+    }
+
+
+    private Boolean isValidPlayerName(String nickname) {
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9_-]*$");
+        Matcher matcher = pattern.matcher(nickname);
+
+        return matcher.matches();
     }
 }

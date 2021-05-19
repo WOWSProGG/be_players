@@ -28,6 +28,42 @@ class PlayerControllerTests {
     }
 
     @Test
+    void checkIfNicknameIsValid() {
+        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/stringOnly", PlayerResponse.class);
+        assertThat(response.getCode()).isNotEqualTo(412);
+
+        response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/stringOnlyWith1234", PlayerResponse.class);
+        assertThat(response.getCode()).isNotEqualTo(412);
+
+        response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/1111111111111", PlayerResponse.class);
+        assertThat(response.getCode()).isNotEqualTo(412);
+
+        response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/111sfjhf", PlayerResponse.class);
+        assertThat(response.getCode()).isNotEqualTo(412);
+
+        response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/string1-string2", PlayerResponse.class);
+        assertThat(response.getCode()).isNotEqualTo(412);
+
+        response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/string1_string2", PlayerResponse.class);
+        assertThat(response.getCode()).isNotEqualTo(412);
+    }
+
+    @Test
+    void checkIfNicknameIsInValid() {
+        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/Nuke Duck Sr", PlayerResponse.class);
+        assertThat(response.getCode()).isEqualTo(412);
+
+        response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuck@Sr", PlayerResponse.class);
+        assertThat(response.getCode()).isEqualTo(412);
+
+        response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuc%kSr", PlayerResponse.class);
+        assertThat(response.getCode()).isEqualTo(412);
+
+        response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuc<script>Sr", PlayerResponse.class);
+        assertThat(response.getCode()).isEqualTo(412);
+    }
+
+    @Test
     void getPlayerByNickname() {
         var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuckSr", PlayerResponse.class);
         assertThat(response.getCode()).isEqualTo(200);
