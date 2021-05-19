@@ -57,41 +57,6 @@ public class PlayerController {
 
         // we did find the player in the database, lets return that....!
         return Response.getPlayer(players.get(0));
-
-//        if (players.size() == 0) {
-//            // this is where we need to make calls to APIs to get data
-//            // this may be an event we send to make sure we are not coupling services
-//
-//            // we need to do this for all regions until we find the user...
-//            Account account;
-//
-//            String region = Region.ASIA;
-//            account = searchPlayer.searchPlayer(region, nickname);
-//            log.info(account.toString());
-//            if (account == null || account.getData() == null) {
-//                region = Region.RUSSIA;
-//                account = searchPlayer.searchPlayer(region, nickname);
-//            }
-//
-//            log.info(account.toString());
-//            if (account.getData().length > 0) {
-//                player = new Player(account, region);
-//                log.info(player.toString());
-//                playerRepo.save(player);
-//            }
-//
-//            // COR Pattern implementation
-//            BaseSearchProcessor searchProcessorRU = new SearchProcessorImpl(Region.RUSSIA, null);
-//            BaseSearchProcessor searchProcessorNA = new SearchProcessorImpl(Region.NORTH_AMERICA, searchProcessorRU);
-//            BaseSearchProcessor searchProcessorEU = new SearchProcessorImpl(Region.EUROPE, searchProcessorNA);
-//            BaseSearchProcessor searchProcessorAsia = new SearchProcessorImpl(Region.ASIA, searchProcessorEU);
-//
-//            searchProcessorAsia.runSearch();
-//
-//        } else {
-//            player = players.get(0);
-//        }
-//        return player;
     }
 
     /**
