@@ -24,7 +24,7 @@ public class SearchAccount {
     private static final String key = "05a1aa6ea78cf970ecf89db80b86d23c";
 
     @Autowired
-    RestTemplate restTemplate;
+    RestTemplate restTemplate1;
 
     public Account searchPlayer(String region, String nickname) {
 
@@ -32,12 +32,12 @@ public class SearchAccount {
                 + nickname;
         log.info(BASE_URL);
 
-        ResponseEntity<Account> responseEntity = restTemplate.getForEntity(BASE_URL, Account.class);
+        ResponseEntity<Account> responseEntity = restTemplate1.getForEntity(BASE_URL, Account.class);
         return responseEntity.getBody();
     }
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+    public RestTemplate restTemplate1(RestTemplateBuilder builder) {
         return builder.build();
     }
 }

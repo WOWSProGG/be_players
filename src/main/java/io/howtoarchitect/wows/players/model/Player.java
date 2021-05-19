@@ -1,6 +1,8 @@
 package io.howtoarchitect.wows.players.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,15 +28,10 @@ public class Player {
     private Date logoutAt;
     private Date statsUpdatedAt;
 
-    public Player(Account account, String region) {
-        Data d = account.getData()[0];
-
-        this.id = d.getAccount_id();
-        this.nickname = d.getNickname();
+    public Player(Data playerData, String region) {
+        this.id = playerData.getAccount_id();
+        this.nickname = playerData.getNickname();
         this.region = region;
-    }
-
-    public Player() {
     }
 
     public String toString() {
