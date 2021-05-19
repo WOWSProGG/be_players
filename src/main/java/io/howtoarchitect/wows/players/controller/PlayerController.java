@@ -49,8 +49,6 @@ public class PlayerController {
 
     @GetMapping("/{nickname}")
     public PlayerResponse get(@PathVariable String nickname) {
-        log.info(MessageFormat.format("Calling /player/get for {0}", nickname));
-
         if(!isValidPlayerName(nickname)) {
             return PlayerResponse.getErrorResponse(412, "invalid characters in nickname.");
         }
@@ -87,8 +85,8 @@ public class PlayerController {
 
 
     private boolean isValidPlayerName(String nickname) {
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9_-]*$");
-        Matcher matcher = pattern.matcher(nickname);
+        var pattern = Pattern.compile("^[a-zA-Z0-9_-]*$");
+        var matcher = pattern.matcher(nickname);
 
         return matcher.matches();
     }
