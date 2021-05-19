@@ -51,7 +51,7 @@ public class PlayerController {
 
         List<Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
 
-        if (players.size() == 0) {
+        if (players.isEmpty()) {
             // return an empty response.
             return PlayerResponse.getErrorResponse();
         }
@@ -75,9 +75,7 @@ public class PlayerController {
         searchProcessorEurope.setupProcessor(Region.EUROPE, searchProcessorNA);
         searchProcessorAsia.setupProcessor(Region.ASIA, searchProcessorEurope);
 
-        List<Player> players = searchProcessorAsia.findPlayer(nickname, new ArrayList<Player>());
-
-        var playersListResponse = PlayerListResponse.getPlayerList(players);
-        return playersListResponse;
+        List<Player> players = searchProcessorAsia.findPlayer(nickname, new ArrayList<>());
+        return PlayerListResponse.getPlayerList(players);
     }
 }
