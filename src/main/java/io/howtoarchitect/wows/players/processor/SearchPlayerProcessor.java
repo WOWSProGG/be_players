@@ -35,7 +35,6 @@ public class SearchPlayerProcessor {
      * @return
      */
     public List<Player> findPlayer(String nickname, List<Player> players) {
-        log.info("searching for " + nickname + " in region " + this.region);
         var accounts = searchAccount.searchPlayer(region, nickname);
         if (accounts.getData().length > 0) {
             // potentially more than 1... so er need to create object for all.

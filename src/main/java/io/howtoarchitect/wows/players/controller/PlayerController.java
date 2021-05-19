@@ -86,7 +86,7 @@ public class PlayerController {
     }
 
 
-    private Boolean isValidPlayerName(String nickname) {
+    private boolean isValidPlayerName(String nickname) {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9_-]*$");
         Matcher matcher = pattern.matcher(nickname);
 
