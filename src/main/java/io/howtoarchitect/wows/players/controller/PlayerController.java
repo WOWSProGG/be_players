@@ -2,7 +2,8 @@ package io.howtoarchitect.wows.players.controller;
 
 import io.howtoarchitect.wows.players.constant.Region;
 import io.howtoarchitect.wows.players.model.Player;
-import io.howtoarchitect.wows.players.model.data.Response;
+import io.howtoarchitect.wows.players.model.response.PlayerListResponse;
+import io.howtoarchitect.wows.players.model.response.PlayerResponse;
 import io.howtoarchitect.wows.players.processor.SearchPlayerProcessor;
 import io.howtoarchitect.wows.players.repository.PlayerRepository;
 import io.howtoarchitect.wows.players.repository.specification.PlayerSpecification;
@@ -45,18 +46,18 @@ public class PlayerController {
 
 
     @GetMapping("/{nickname}")
-    public Response get(@PathVariable String nickname) {
+    public PlayerResponse get(@PathVariable String nickname) {
         log.info(MessageFormat.format("Calling /player/get for {0}", nickname));
 
-        List<Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
+        List<io.howtoarchitect.wows.players.model.Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
 
         if (players.size() == 0) {
             // return an empty response.
-            return Response.getErrorResponse();
+            return PlayerResponse.getErrorResponse();
         }
 
         // we did find the player in the database, lets return that....!
-        return Response.getPlayer(players.get(0));
+        return PlayerResponse.getPlayer(players.get(0));
     }
 
     /**
@@ -66,7 +67,7 @@ public class PlayerController {
      * @return
      */
     @GetMapping("/find/{nickname}")
-    public List<Player> find(@PathVariable String nickname) {
+    public PlayerListResponse find(@PathVariable String nickname) {
 
         //setup the chain
         searchProcessorRussia.setupProcessor(Region.RUSSIA, null);
@@ -76,6 +77,7 @@ public class PlayerController {
 
         List<Player> players = searchProcessorAsia.findPlayer(nickname, new ArrayList<Player>());
 
-        return players;
+        var playersListResponse = PlayerListResponse.getPlayerList(players);
+        return playersListResponse;
     }
 }

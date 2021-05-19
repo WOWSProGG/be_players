@@ -1,21 +1,18 @@
-package io.howtoarchitect.wows.players.model.data;
+package io.howtoarchitect.wows.players.model.response;
 
-import io.howtoarchitect.wows.players.model.Player;
-
-public class Response {
+public class PlayerResponse {
     private Integer code;
     private String message;
-    private Player player;
+    private io.howtoarchitect.wows.players.model.Player player;
 
-    public static Response getErrorResponse() {
-        var emptyResponse = new Response();
+    public static PlayerResponse getErrorResponse() {
+        var emptyResponse = new PlayerResponse();
         emptyResponse.setCode(404);
-
         return emptyResponse;
     }
 
-    public static Response getPlayer(Player player) {
-        var response = new Response();
+    public static PlayerResponse getPlayer(io.howtoarchitect.wows.players.model.Player player) {
+        var response = new PlayerResponse();
         response.setCode(200);
         response.setPlayer(player);
 
@@ -38,11 +35,11 @@ public class Response {
         this.code = code;
     }
 
-    public Player getPlayer() {
+    public io.howtoarchitect.wows.players.model.Player getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(io.howtoarchitect.wows.players.model.Player player) {
         this.player = player;
     }
 }

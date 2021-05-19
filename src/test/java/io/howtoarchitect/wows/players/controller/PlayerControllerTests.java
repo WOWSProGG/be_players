@@ -1,7 +1,7 @@
 package io.howtoarchitect.wows.players.controller;
 
 import io.howtoarchitect.wows.players.constant.Region;
-import io.howtoarchitect.wows.players.model.data.Response;
+import io.howtoarchitect.wows.players.model.response.PlayerResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +29,7 @@ class PlayerControllerTests {
 
     @Test
     void getPlayerByNickname() {
-        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuckSr", Response.class);
+        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuckSr", PlayerResponse.class);
         assertThat(response.getCode()).isEqualTo(200);
         assertThat(response.getPlayer()).isNotNull();
 
@@ -40,7 +40,7 @@ class PlayerControllerTests {
 
     @Test
     void getInvalidPlayer() {
-        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/InvalidPlayer", Response.class);
+        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/InvalidPlayer", PlayerResponse.class);
         assertThat(response.getCode()).isEqualTo(404);
     }
 }
