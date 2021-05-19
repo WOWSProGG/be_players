@@ -3,6 +3,7 @@ package io.howtoarchitect.wows.players.controller.api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +22,8 @@ public class SearchAccount {
     private static final String HOST_ACCOUNT_API = "/list/";
     private static final String KEY = "05a1aa6ea78cf970ecf89db80b86d23c";
 
-    final RestTemplate restTemplate1;
-
-    public SearchAccount(RestTemplate restTemplate1) {
-        this.restTemplate1 = restTemplate1;
-    }
+    @Autowired
+    private RestTemplate restTemplate;
 
     public Account searchPlayer(String region, String nickname) {
 
@@ -33,12 +31,12 @@ public class SearchAccount {
                 + nickname;
         log.info(baseUrl);
 
-        ResponseEntity<Account> responseEntity = restTemplate1.getForEntity(baseUrl, Account.class);
+        ResponseEntity<Account> responseEntity = restTemplate.getForEntity(baseUrl, Account.class);
         return responseEntity.getBody();
     }
 
     @Bean
-    public RestTemplate restTemplate1(RestTemplateBuilder builder) {
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
 }
