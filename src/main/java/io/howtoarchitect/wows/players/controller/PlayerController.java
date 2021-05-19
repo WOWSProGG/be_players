@@ -49,7 +49,7 @@ public class PlayerController {
     public PlayerResponse get(@PathVariable String nickname) {
         log.info(MessageFormat.format("Calling /player/get for {0}", nickname));
 
-        List<io.howtoarchitect.wows.players.model.Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
+        List<Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
 
         if (players.size() == 0) {
             // return an empty response.

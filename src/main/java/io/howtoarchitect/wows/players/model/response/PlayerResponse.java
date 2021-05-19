@@ -1,9 +1,11 @@
 package io.howtoarchitect.wows.players.model.response;
 
+import io.howtoarchitect.wows.players.model.Player;
+
 public class PlayerResponse {
     private Integer code;
     private String message;
-    private io.howtoarchitect.wows.players.model.Player player;
+    private Player player;
 
     public static PlayerResponse getErrorResponse() {
         var emptyResponse = new PlayerResponse();
@@ -11,7 +13,7 @@ public class PlayerResponse {
         return emptyResponse;
     }
 
-    public static PlayerResponse getPlayer(io.howtoarchitect.wows.players.model.Player player) {
+    public static PlayerResponse getPlayer(Player player) {
         var response = new PlayerResponse();
         response.setCode(200);
         response.setPlayer(player);
@@ -39,7 +41,7 @@ public class PlayerResponse {
         return player;
     }
 
-    public void setPlayer(io.howtoarchitect.wows.players.model.Player player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 }
