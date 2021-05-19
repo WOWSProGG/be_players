@@ -1,8 +1,6 @@
 package io.howtoarchitect.wows.players.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +9,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import io.howtoarchitect.wows.players.model.api.Account;
 import io.howtoarchitect.wows.players.model.api.Data;
 
 @Entity

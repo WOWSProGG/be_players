@@ -1,24 +1,15 @@
 package io.howtoarchitect.wows.players.processor;
 
-import io.howtoarchitect.wows.players.constant.Region;
 import io.howtoarchitect.wows.players.controller.api.SearchAccount;
 import io.howtoarchitect.wows.players.model.Player;
 
-import io.howtoarchitect.wows.players.model.api.Account;
 import io.howtoarchitect.wows.players.model.api.Data;
-import io.micrometer.core.instrument.search.Search;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,7 +19,6 @@ public class SearchPlayerProcessor {
 
     protected SearchPlayerProcessor nextProcessor;
     protected String region;
-
 
     @Autowired
     private SearchAccount searchAccount;
