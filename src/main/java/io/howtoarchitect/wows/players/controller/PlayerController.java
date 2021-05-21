@@ -71,13 +71,15 @@ public class PlayerController {
             return PlayerListResponse.getErrorResponse(412, "invalid characters in nickname.");
         }
 
+        var nick = new String(nickname);
+
         //setup the chain
         searchProcessorRussia.setupProcessor(Region.RUSSIA, null);
         searchProcessorNA.setupProcessor(Region.NORTH_AMERICA, searchProcessorRussia);
         searchProcessorEurope.setupProcessor(Region.EUROPE, searchProcessorNA);
         searchProcessorAsia.setupProcessor(Region.ASIA, searchProcessorEurope);
 
-        List<Player> players = searchProcessorAsia.findPlayer(nickname, new ArrayList<>());
+        List<Player> players = searchProcessorAsia.findPlayer(nick, new ArrayList<>());
         return PlayerListResponse.getPlayerList(players);
     }
 
