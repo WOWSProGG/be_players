@@ -69,7 +69,7 @@ public class PlayerController {
         if(!isSafeFromSSRF(nickname)) {
             return PlayerListResponse.getErrorResponse(412, "invalid characters in nickname.");
         } else {
-            nick = new String(nickname)
+            nick = new String(nickname);
         }
 
         //setup the chain
