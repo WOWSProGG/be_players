@@ -45,9 +45,6 @@ public class PlayerController {
 
     @GetMapping("/{nickname}")
     public PlayerResponse get(@PathVariable String nickname) {
-        if(!isValidPlayerName(nickname)) {
-            return PlayerResponse.getErrorResponse(412, "invalid characters in nickname.");
-        }
 
 
         List<Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
@@ -72,22 +69,13 @@ public class PlayerController {
             return PlayerListResponse.getErrorResponse(412, "invalid characters in nickname.");
         }
 
-        // if the nickname has a HTTP call, then this will throw an exception.
-        try {
-            checkForSSRF(nickname);
-        } catch (IOException e) {
-            return PlayerListResponse.getErrorResponse(412, "invalid characters in nickname.");
-        }
-
-        var nick = new String(nickname);
-
         //setup the chain
         searchProcessorRussia.setupProcessor(Region.RUSSIA, null);
         searchProcessorNA.setupProcessor(Region.NORTH_AMERICA, searchProcessorRussia);
         searchProcessorEurope.setupProcessor(Region.EUROPE, searchProcessorNA);
         searchProcessorAsia.setupProcessor(Region.ASIA, searchProcessorEurope);
 
-        List<Player> players = searchProcessorAsia.findPlayer(nick, new ArrayList<>());
+        List<Player> players = searchProcessorAsia.findPlayer(nickname, new ArrayList<>());
         return PlayerListResponse.getPlayerList(players);
     }
 
@@ -97,12 +85,5 @@ public class PlayerController {
         var matcher = pattern.matcher(nickname);
 
         return matcher.matches();
-    }
-
-    private void checkForSSRF(String nickname) throws IOException {
-        String urlWhiteListed = "https://";
-        if (nickname.startsWith(urlWhiteListed)) {
-            throw new IOException("The parameter passed is invalid");
-        }
     }
 }
