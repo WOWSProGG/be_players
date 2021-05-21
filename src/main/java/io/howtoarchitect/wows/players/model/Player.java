@@ -34,10 +34,6 @@ public class Player {
         this.region = region;
     }
 
-    public String toString() {
-        return this.getId() + " " + this.getNickname();
-    }
-
     @Id
     @Column(name = "application_id", nullable = false)
     public long getId() {
