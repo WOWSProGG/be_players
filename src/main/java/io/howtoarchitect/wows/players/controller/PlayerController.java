@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -71,7 +72,12 @@ public class PlayerController {
             return PlayerListResponse.getErrorResponse(412, "invalid characters in nickname.");
         }
 
-        var nick = new String(nickname);
+        // if the nickname has a HTTP call, then this will throw an exception.
+        try {
+            checkForSSRF(nickname);
+        } catch (IOException e) {
+            return PlayerListResponse.getErrorResponse(412, "invalid characters in nickname.");
+        }
 
         //setup the chain
         searchProcessorRussia.setupProcessor(Region.RUSSIA, null);
@@ -79,7 +85,7 @@ public class PlayerController {
         searchProcessorEurope.setupProcessor(Region.EUROPE, searchProcessorNA);
         searchProcessorAsia.setupProcessor(Region.ASIA, searchProcessorEurope);
 
-        List<Player> players = searchProcessorAsia.findPlayer(nick, new ArrayList<>());
+        List<Player> players = searchProcessorAsia.findPlayer(nickname, new ArrayList<>());
         return PlayerListResponse.getPlayerList(players);
     }
 
@@ -89,5 +95,12 @@ public class PlayerController {
         var matcher = pattern.matcher(nickname);
 
         return matcher.matches();
+    }
+
+    private void checkForSSRF(String nickname) throws IOException {
+        String urlWhiteListed = "https://";
+        if (nickname.startsWith(urlWhiteListed)) {
+            throw new IOException("The parameter passed is invalid");
+        }
     }
 }
