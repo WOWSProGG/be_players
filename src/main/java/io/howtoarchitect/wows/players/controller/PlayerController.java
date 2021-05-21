@@ -65,8 +65,11 @@ public class PlayerController {
      */
     @GetMapping("/find/{nickname}")
     public PlayerListResponse find(@PathVariable String nickname) {
+        String nick;
         if(!isSafeFromSSRF(nickname)) {
             return PlayerListResponse.getErrorResponse(412, "invalid characters in nickname.");
+        } else {
+            nick = new String(nickname)
         }
 
         //setup the chain
