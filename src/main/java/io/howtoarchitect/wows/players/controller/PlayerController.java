@@ -65,13 +65,6 @@ public class PlayerController {
      */
     @GetMapping("/find/{nickname}")
     public PlayerListResponse find(@PathVariable String nickname) {
-        String nick;
-        if(!isSafeFromSSRF(nickname)) {
-            return PlayerListResponse.getErrorResponse(412, "invalid characters in nickname.");
-        } else {
-            nick = new String(nickname);
-        }
-
         //setup the chain
         searchProcessorRussia.setupProcessor(Region.RUSSIA, null);
         searchProcessorNA.setupProcessor(Region.NORTH_AMERICA, searchProcessorRussia);
@@ -81,26 +74,4 @@ public class PlayerController {
         List<Player> players = searchProcessorAsia.findPlayer(nickname, new ArrayList<>());
         return PlayerListResponse.getPlayerList(players);
     }
-
-    private boolean isSafeFromSSRF(String nickname) {
-        var blacklistedURLs = new ArrayList<String>();
-        blacklistedURLs.add("https");
-        blacklistedURLs.add("http");
-        blacklistedURLs.add("ftp");
-
-        for(String url : blacklistedURLs) {
-            if(nickname.contains(url)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-//    private boolean isValidPlayerName(String nickname) {
-//        var pattern = Pattern.compile("^[a-zA-Z0-9_-]*$");
-//        var matcher = pattern.matcher(nickname);
-//
-//        return matcher.matches();
-//    }
 }
