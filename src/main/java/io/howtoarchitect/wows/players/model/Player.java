@@ -29,7 +29,7 @@ public class Player {
     }
 
     public Player(Data playerData, String region) {
-        this.id = playerData.getAccountId();
+        this.id = playerData.getAccount_id();
         this.nickname = playerData.getNickname();
         this.region = region;
     }
