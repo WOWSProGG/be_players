@@ -108,6 +108,6 @@ class PlayerControllerTests {
     @Test
     void findPlayer() {
         var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuck", PlayerListResponse.class);
-        assertThat(response.getPlayers().size() >= 4); // we know this api call will return at least 4 records.
+        assertThat(response.getPlayers().size()).isLessThanOrEqualTo(4); // we know this api call will return at least 4 records.
     }
 }
