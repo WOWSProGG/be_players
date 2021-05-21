@@ -39,7 +39,7 @@ public class PlayerResponse {
         this.code = code;
     }
 
-    public io.howtoarchitect.wows.players.model.Player getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 

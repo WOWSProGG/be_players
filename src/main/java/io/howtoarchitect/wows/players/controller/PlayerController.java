@@ -67,6 +67,9 @@ public class PlayerController {
      */
     @GetMapping("/find/{nickname}")
     public PlayerListResponse find(@PathVariable String nickname) {
+        if(!isValidPlayerName(nickname)) {
+            return PlayerListResponse.getErrorResponse(412, "invalid characters in nickname.");
+        }
 
         //setup the chain
         searchProcessorRussia.setupProcessor(Region.RUSSIA, null);

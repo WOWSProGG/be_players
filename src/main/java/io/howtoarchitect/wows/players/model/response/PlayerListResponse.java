@@ -10,6 +10,14 @@ public class PlayerListResponse {
     private String message = "Ok";
     private List<Player> players = new ArrayList<>();
 
+    public static PlayerListResponse getErrorResponse(Integer code, String message) {
+        var errorResponse = new PlayerListResponse();
+        errorResponse.setCode(code);
+        errorResponse.setMessage(message);
+
+        return errorResponse;
+    }
+
     public static PlayerListResponse getPlayerList(List<Player> players) {
         var response = new PlayerListResponse();
         response.code = 200;
@@ -18,12 +26,20 @@ public class PlayerListResponse {
         return response;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public Integer getCode() {
         return code;
     }
 
-    public String getMessage() {
-        return message;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
     public List<Player> getPlayers() {
