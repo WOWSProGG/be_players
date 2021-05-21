@@ -64,17 +64,26 @@ class PlayerControllerTests {
     }
 
     @Test
-    void checkIfNicknameIsInValid() {
+    void checkIfNicknameWithSpacesIsInValid() {
         var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/Nuke Duck Sr", PlayerResponse.class);
         assertThat(response.getCode()).isEqualTo(412);
+    }
 
-        response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuck@Sr", PlayerResponse.class);
+    @Test
+    void checkIfNicknameWithAtTheRateIsInValid() {
+        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuck@Sr", PlayerResponse.class);
         assertThat(response.getCode()).isEqualTo(412);
+    }
 
-        response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuc%kSr", PlayerResponse.class);
+    @Test
+    void checkIfNicknameWithPercentageIsInValid() {
+        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuc%kSr", PlayerResponse.class);
         assertThat(response.getCode()).isEqualTo(412);
+    }
 
-        response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuc<script>Sr", PlayerResponse.class);
+    @Test
+    void checkIfNicknameWithHTMLTagIsInValid() {
+        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuc<script>Sr", PlayerResponse.class);
         assertThat(response.getCode()).isEqualTo(412);
     }
 
