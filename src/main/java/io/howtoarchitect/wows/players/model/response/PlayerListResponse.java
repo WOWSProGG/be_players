@@ -8,7 +8,7 @@ import java.util.List;
 public class PlayerListResponse {
     private Integer code = 200;
     private String message = "Ok";
-    private List<Player> players = new ArrayList<Player>();
+    private List<Player> players = new ArrayList<>();
 
     public static PlayerListResponse getPlayerList(List<Player> players) {
         var response = new PlayerListResponse();

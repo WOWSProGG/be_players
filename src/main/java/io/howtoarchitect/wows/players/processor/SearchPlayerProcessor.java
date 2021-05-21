@@ -4,8 +4,6 @@ import io.howtoarchitect.wows.players.controller.api.SearchAccount;
 import io.howtoarchitect.wows.players.model.Player;
 
 import io.howtoarchitect.wows.players.model.api.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,6 @@ import java.util.List;
 @Service
 @Scope (value = "prototype")
 public class SearchPlayerProcessor {
-    private static final Logger log = LoggerFactory.getLogger(SearchPlayerProcessor.class);
 
     protected SearchPlayerProcessor nextProcessor;
     protected String region;

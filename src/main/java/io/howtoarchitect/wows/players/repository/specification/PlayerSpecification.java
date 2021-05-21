@@ -14,4 +14,6 @@ public class PlayerSpecification {
         return (player, cq, cb) -> cb.equal(player.get("region"), region);
     }
 
+    private  PlayerSpecification() {
+    }
 }
