@@ -1,6 +1,7 @@
 package io.howtoarchitect.wows.players.controller;
 
 import io.howtoarchitect.wows.players.constant.Region;
+import io.howtoarchitect.wows.players.model.response.PlayerListResponse;
 import io.howtoarchitect.wows.players.model.response.PlayerResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,8 +100,14 @@ class PlayerControllerTests {
     }
 
     @Test
-    void getInvalidPlayer() {
+    void getPlayerWithInvalidName() {
         var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/InvalidPlayer", PlayerResponse.class);
         assertThat(response.getCode()).isEqualTo(404);
+    }
+
+    @Test
+    void findPlayer() {
+        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/NukeDuck", PlayerListResponse.class);
+        assertThat(response.getPlayers().size() >= 4); // we know this api call will return at least 4 records.
     }
 }
