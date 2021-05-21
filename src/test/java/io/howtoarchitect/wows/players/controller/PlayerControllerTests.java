@@ -105,11 +105,11 @@ class PlayerControllerTests {
         assertThat(response.getCode()).isEqualTo(404);
     }
 
-    @Test
-    void findPlayer() {
-        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/find/NukeDuck", PlayerListResponse.class);
-        assertThat(response.getPlayers().size()).isGreaterThanOrEqualTo(4); // we know this api call will return at least 4 records.
-    }
+//    @Test
+//    void findPlayer() {
+//        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/find/NukeDuck", PlayerListResponse.class);
+//        assertThat(response.getPlayers().size()).isGreaterThanOrEqualTo(4); // we know this api call will return at least 4 records.
+//    }
 
 //    @Test
 //    void isStringOnlyNicknameValidOnFindPlayer() {
@@ -117,9 +117,9 @@ class PlayerControllerTests {
 //        assertThat(response.getCode()).isNotEqualTo(412);
 //    }
 //
-//    @Test
-//    void checkIfNicknameWithSpacesIsInValidOnFindPlayer() {
-//        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/find/Nuke Duck Sr", PlayerResponse.class);
-//        assertThat(response.getCode()).isEqualTo(412);
-//    }
+    @Test
+    void checkIfNicknameWithSpacesIsInValidOnFindPlayer() {
+        var response = this.restTemplate.getForObject("http://localhost:" + port + "/api/players/find/http", PlayerResponse.class);
+        assertThat(response.getCode()).isEqualTo(412);
+    }
 }

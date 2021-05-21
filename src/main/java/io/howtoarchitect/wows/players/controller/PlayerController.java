@@ -81,8 +81,9 @@ public class PlayerController {
 
     private boolean isSafeFromSSRF(String nickname) {
         var blacklistedURLs = new ArrayList<String>();
-        blacklistedURLs.add("https://");
-        blacklistedURLs.add("http://");
+        blacklistedURLs.add("https");
+        blacklistedURLs.add("http");
+        blacklistedURLs.add("ftp");
 
         for(String url : blacklistedURLs) {
             if(nickname.contains(url)) {
