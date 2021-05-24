@@ -1,20 +1,20 @@
 package io.howtoarchitect.wows.players.controller;
 
 import io.howtoarchitect.wows.players.constant.Region;
-import io.howtoarchitect.wows.players.controller.api.SearchAccount;
 import io.howtoarchitect.wows.players.model.Player;
-import io.howtoarchitect.wows.players.model.api.Account;
-import io.howtoarchitect.wows.players.processor.findplayer.BaseSearchProcessor;
-import io.howtoarchitect.wows.players.processor.findplayer.SearchProcessorImpl;
+import io.howtoarchitect.wows.players.model.response.PlayerListResponse;
+import io.howtoarchitect.wows.players.model.response.PlayerResponse;
+import io.howtoarchitect.wows.players.processor.SearchPlayerProcessor;
 import io.howtoarchitect.wows.players.repository.PlayerRepository;
 import io.howtoarchitect.wows.players.repository.specification.PlayerSpecification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -22,54 +22,54 @@ import static org.springframework.data.jpa.domain.Specification.where;
 
 @RestController
 @RequestMapping("/api/players")
+@Configurable
 public class PlayerController {
 
-    private final PlayerRepository playerRepo;
+    @Autowired
+    public PlayerRepository playerRepo;
 
-    private final SearchAccount searchPlayer;
+    @Autowired
+    private SearchPlayerProcessor searchProcessorAsia;
 
-    private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
+    @Autowired
+    private SearchPlayerProcessor searchProcessorRussia;
 
-    public PlayerController(PlayerRepository playerRepo, SearchAccount searchPlayer) {
-        this.playerRepo = playerRepo;
-        this.searchPlayer = searchPlayer;
-    }
+    @Autowired
+    private SearchPlayerProcessor searchProcessorEurope;
+
+    @Autowired
+    private SearchPlayerProcessor searchProcessorNA;
+
 
     @GetMapping("/{nickname}")
-    public Player get(@PathVariable String nickname) {
-        Player player;
+    public PlayerResponse get(@PathVariable String nickname) {
+
+
         List<Player> players = playerRepo.findAll(where(PlayerSpecification.hasNickname(nickname)));
-
-        if (players.size() == 0) {
-            // this is where we need to make calls to APIs to get data
-            // this may be an event we send to make sure we are not coupling services
-
-            // we need to do this for all regions until we find the user...
-            Account account;
-
-            String region = Region.ASIA;
-            account = searchPlayer.searchPlayer(region, nickname);
-            log.info(account.toString());
-            if (account == null || account.getData() == null) {
-                region = Region.RUSSIA;
-                account = searchPlayer.searchPlayer(region, nickname);
-            }
-
-            player = new Player(account, region);
-            log.info(player.toString());
-            playerRepo.save(player);
-
-            // COR Pattern implementation
-            BaseSearchProcessor searchProcessorAsia = new SearchProcessorImpl(Region.ASIA, null);
-            BaseSearchProcessor searchProcessorRU = new SearchProcessorImpl(Region.RUSSIA, searchProcessorAsia);
-            BaseSearchProcessor searchProcessorEU = new SearchProcessorImpl(Region.EUROPE, searchProcessorRU);
-            BaseSearchProcessor searchProcessorNA = new SearchProcessorImpl(Region.NORTH_AMERICA,searchProcessorEU);
-            searchProcessorNA.runSearch();
-
-        } else {
-            player = players.get(0);
+        if (players.isEmpty()) {
+            // return an empty response.
+            return PlayerResponse.getErrorResponse(404, "PLayer not found.");
         }
-        return player;
+
+        // we did find the player in the database, lets return that....!
+        return PlayerResponse.getPlayer(players.get(0));
     }
 
+    /**
+     * This api call will search for a player in the various region endpoints.
+     *
+     * @param nickname
+     * @return
+     */
+    @GetMapping("/find/{nickname}")
+    public PlayerListResponse find(@PathVariable String nickname) {
+        //setup the chain
+        searchProcessorRussia.setupProcessor(Region.RUSSIA, null);
+        searchProcessorNA.setupProcessor(Region.NORTH_AMERICA, searchProcessorRussia);
+        searchProcessorEurope.setupProcessor(Region.EUROPE, searchProcessorNA);
+        searchProcessorAsia.setupProcessor(Region.ASIA, searchProcessorEurope);
+
+        List<Player> players = searchProcessorAsia.findPlayer(nickname, new ArrayList<>());
+        return PlayerListResponse.getPlayerList(players);
+    }
 }

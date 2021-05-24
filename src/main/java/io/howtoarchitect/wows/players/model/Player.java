@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import io.howtoarchitect.wows.players.model.api.Account;
 import io.howtoarchitect.wows.players.model.api.Data;
 
 @Entity
@@ -26,19 +25,13 @@ public class Player {
     private Date logoutAt;
     private Date statsUpdatedAt;
 
-    public Player(Account account, String region) {
-        Data d = account.getData()[0];
-
-        this.id = d.getAccount_id();
-        this.nickname = d.getNickname();
-        this.region = region;
-    }
-
     public Player() {
     }
 
-    public String toString() {
-        return this.getId() + " " + this.getNickname();
+    public Player(Data playerData, String region) {
+        this.id = playerData.getAccount_id();
+        this.nickname = playerData.getNickname();
+        this.region = region;
     }
 
     @Id

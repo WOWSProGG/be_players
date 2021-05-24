@@ -17,22 +17,21 @@ public class SearchAccount {
 
     private static final Logger log = LoggerFactory.getLogger(SearchAccount.class);
 
-    private final static String hostPrefix = "https://api.worldofwarships.";
-    private static final String hostSuffix = "/wows/account";
-    private static final String hostAccountAPI = "/list/";
-
-    private static final String key = "05a1aa6ea78cf970ecf89db80b86d23c";
+    private static final String HOST_PRE = "https://api.worldofwarships.";
+    private static final String HOST_SUF = "/wows/account";
+    private static final String HOST_ACCOUNT_API = "/list/";
+    private static final String KEY = "05a1aa6ea78cf970ecf89db80b86d23c";
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     public Account searchPlayer(String region, String nickname) {
 
-        String BASE_URL = hostPrefix + region + hostSuffix + hostAccountAPI + "?application_id=" + key + "&search="
+        String baseUrl = HOST_PRE + region + HOST_SUF + HOST_ACCOUNT_API + "?application_id=" + KEY + "&search="
                 + nickname;
-        log.info(BASE_URL);
+        log.info(baseUrl);
 
-        ResponseEntity<Account> responseEntity = restTemplate.getForEntity(BASE_URL, Account.class);
+        ResponseEntity<Account> responseEntity = restTemplate.getForEntity(baseUrl, Account.class);
         return responseEntity.getBody();
     }
 
